@@ -1,0 +1,58 @@
+name: zooeye
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^8.1.4
+  bloc: ^8.1.2
+  equatable: ^2.0.5
+  flutter_localizations:
+    sdk: flutter
+  image_picker: ^1.2.1
+  google_mlkit_image_labeling: ^0.14.2
+  http: ^1.6.0
+  path_provider: ^2.1.5
+  tflite_flutter: ^0.12.1
+  image: ^4.8.0
+  shared_preferences: ^2.5.5
+  gal: ^2.3.2
+  flutter_staggered_grid_view: ^0.7.0
+  flutter_launcher_icons: ^0.14.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+# 🌟 إعدادات أيقونة التطبيق الجديدة
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png" # 👈 تم تغيير المسار هنا
+  adaptive_icon_background: "#F2E8D5"
+  adaptive_icon_foreground: "assets/logo.png" # 👈 وهنا كمان
+
+flutter:
+  uses-material-design: true
+
+  # 🌟 تحديث الـ Assets لتشمل الصور والحيوانات
+  assets:
+    - assets/animals/
+    - assets/logo.png # مسار اللوجو الجديد (تأكد من تسميته logo.png وضعه في هذا الفولدر)
+
+  # إذا كان عندك خطوط مخصصة زي Cairo اللي بنستخدمها في الكود، ضيفها هنا:
+  # fonts:
+  #   - family: Cairo
+  #     fonts:
+  #       - asset: assets/fonts/Cairo-Regular.ttf
+  #       - asset: assets/fonts/Cairo-Bold.ttf
+  #         weight: 700
