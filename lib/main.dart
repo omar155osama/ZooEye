@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'features/explore/presentation/cubit/explore_cubit.dart';
 import 'features/saved/presentation/cubit/saved_cubit.dart';
 import 'features/explore/presentation/views/splash_view.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env"); // 🌟
   runApp(const ZooEyeApp());
 }
 

@@ -2,11 +2,14 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart'; 
 
 class VisionApiService {
-  static const String apiKey =
-      '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';
+  // 🌟 سحب الكي من ملف الـ .env المخفي
+  static final String apiKey = dotenv.env['OPENROUTER_API_KEY'] ?? '';
   static const String apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
+  
+  // 🌟 استخدام موديل مخصص وقوي جداً في الرؤية (Vision) عشان تتجنب أخطاء الـ Auto
   static const String model = 'openrouter/auto';
 
   static Future<String> analyzeImage(File imageFile) async {

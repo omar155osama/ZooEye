@@ -6,16 +6,21 @@ import '../../../../core/constants/app_colors.dart';
 
 class LoadingScreen extends StatefulWidget {
   final VoidCallback onComplete;
-  
-  const LoadingScreen({super.key, required this.onComplete, File? previewImage});
+
+  const LoadingScreen({
+    super.key,
+    required this.onComplete,
+    File? previewImage,
+  });
 
   @override
   State<LoadingScreen> createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateMixin {
+class _LoadingScreenState extends State<LoadingScreen>
+    with TickerProviderStateMixin {
   int _step = 0;
-  
+
   // نصوص التحميل من كود الـ React الأصلي
   final List<Map<String, String>> _steps = [
     {'en': 'Looking at the animal…', 'ar': 'نتأمل الحيوان…'},
@@ -29,7 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
   @override
   void initState() {
     super.initState();
-    
+
     // 🌟 أنيميشن "الطفو" للكارت (2.5s)
     _floatController = AnimationController(
       duration: const Duration(milliseconds: 2500),
@@ -37,10 +42,14 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
     )..repeat(reverse: true);
 
     // 🌟 أنيميشن الـ 3 نقط (بفوارق زمنية 0.15s)
-    _dotControllers = List.generate(3, (i) => 
-      AnimationController(duration: Duration(milliseconds: 700 + (i * 150)), vsync: this)
+    _dotControllers = List.generate(
+      3,
+      (i) => AnimationController(
+        duration: Duration(milliseconds: 700 + (i * 150)),
+        vsync: this,
+      ),
     );
-    
+
     for (var i = 0; i < 3; i++) {
       Future.delayed(Duration(milliseconds: i * 150), () {
         if (mounted) _dotControllers[i].repeat(reverse: true);
@@ -48,8 +57,14 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
     }
 
     // ⏳ تغيير النصوص والتحويل التلقائي (نفس توقيتات React)
-    Timer(const Duration(milliseconds: 1400), () => setState(() => _step = 1));
-    Timer(const Duration(milliseconds: 2800), () => setState(() => _step = 2));
+    // تغيير النصوص والتحويل التلقائي
+    Timer(const Duration(milliseconds: 1400), () {
+      if (mounted) setState(() => _step = 1);
+    });
+
+    Timer(const Duration(milliseconds: 2800), () {
+      if (mounted) setState(() => _step = 2);
+    });
     Timer(const Duration(milliseconds: 4000), widget.onComplete);
   }
 
@@ -70,19 +85,25 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
         children: [
           // 🌟 Soft blobs في الخلفية (أخضر وبرتقالي شفاف جداً)
           Positioned(
-            top: -80, right: -80,
+            top: -80,
+            right: -80,
             child: Container(
-              width: 300, height: 300,
+              width: 300,
+              height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primaryGreen.withValues(alpha: 0.04), // 8% opacity كما في الكود
+                color: AppColors.primaryGreen.withValues(
+                  alpha: 0.04,
+                ), // 8% opacity كما في الكود
               ),
             ),
           ),
           Positioned(
-            bottom: 60, left: -60,
+            bottom: 60,
+            left: -60,
             child: Container(
-              width: 200, height: 200,
+              width: 200,
+              height: 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.accentOrange.withValues(alpha: 0.04),
@@ -100,23 +121,37 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
                   builder: (context, child) => Transform.translate(
                     offset: Offset(0, -10 * _floatController.value),
                     child: Container(
-                      width: 180, height: 180,
+                      width: 180,
+                      height: 180,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40),
                         gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Color(0xFF8B6914), Color(0xFFD4A820), Color(0xFFA07010)],
+                          colors: [
+                            Color(0xFF8B6914),
+                            Color(0xFFD4A820),
+                            Color(0xFFA07010),
+                          ],
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primaryGreen.withValues(alpha: 0.18),
-                            blurRadius: 48, offset: const Offset(0, 16),
+                            color: AppColors.primaryGreen.withValues(
+                              alpha: 0.18,
+                            ),
+                            blurRadius: 48,
+                            offset: const Offset(0, 16),
                           ),
-                          BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 12, offset: const Offset(0, 4)),
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
                         ],
                       ),
-                      child: const Center(child: Text('🦁', style: TextStyle(fontSize: 80))),
+                      child: const Center(
+                        child: Text('🦁', style: TextStyle(fontSize: 80)),
+                      ),
                     ),
                   ),
                 ),
@@ -126,18 +161,30 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
                 // 🌟 النقط الثلاثة بتنط (Bouncing dots)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(3, (i) => AnimatedBuilder(
-                    animation: _dotControllers[i],
-                    builder: (context, child) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: 9, height: 9,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: [AppColors.primaryGreen, AppColors.accentOrange, const Color(0xFFE8C07D)][i],
+                  children: List.generate(
+                    3,
+                    (i) => AnimatedBuilder(
+                      animation: _dotControllers[i],
+                      builder: (context, child) => Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: 9,
+                        height: 9,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: [
+                            AppColors.primaryGreen,
+                            AppColors.accentOrange,
+                            const Color(0xFFE8C07D),
+                          ][i],
+                        ),
+                        transform: Matrix4.translationValues(
+                          0,
+                          -6 * _dotControllers[i].value,
+                          0,
+                        ),
                       ),
-                      transform: Matrix4.translationValues(0, -6 * _dotControllers[i].value, 0),
                     ),
-                  )),
+                  ),
                 ),
 
                 const SizedBox(height: 24),
@@ -152,7 +199,11 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
                         child: Text(
                           _steps[_step]['en']!,
                           key: ValueKey(_step),
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Color(0xFF1A1A1A)),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF1A1A1A),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -161,7 +212,11 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
                         child: Text(
                           _steps[_step]['ar']!,
                           key: ValueKey('ar$_step'),
-                          style: const TextStyle(fontSize: 13, color: Color(0xFF888888), fontFamily: 'Cairo'),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF888888),
+                            fontFamily: 'Cairo',
+                          ),
                         ),
                       ),
                     ],

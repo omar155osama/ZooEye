@@ -1,10 +1,14 @@
 import 'dart:convert';
-import 'dart:async'; // 🌟 مهم عشان الـ TimeoutException
+import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // 🌟 استدعاء المكتبة
 
 class AIInfoService {
-  static const String apiKey = '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';
+  // 🌟 هنا بنقرأ الكي من الخزنة (ملف .env) بدل ما نكتبه بإيدينا
+  static final String apiKey = dotenv.env['OPENROUTER_API_KEY'] ?? '';
   static const String apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
+  
+  // 🌟 يفضل استخدام موديل سريع ومضمون في الـ JSON بدل auto
   static const String model = 'openrouter/auto';
 
   static Future<Map<String, dynamic>> getAnimalInfo(String animalName) async {
@@ -30,7 +34,6 @@ RULES:
 }
 ''';
 
-      // 🌟 إضافة Timeout لمدة 20 ثانية
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -43,13 +46,12 @@ RULES:
             {'role': 'user', 'content': prompt},
           ],
           'max_tokens': 800,
+          'response_format': { 'type': 'json_object' }, // 🌟 إجبار الموديل على JSON
         }),
       ).timeout(const Duration(seconds: 20), onTimeout: () {
         throw Exception('السيرفر استغرق وقتاً طويلاً. تأكد من جودة الإنترنت أو حاول لاحقاً.');
       });
 
-
-      // 🌟 معالجة الردود
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         var content = data['choices'][0]['message']['content'].toString().trim();

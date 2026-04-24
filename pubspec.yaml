@@ -27,6 +27,7 @@ dependencies:
   gal: ^2.3.2
   flutter_staggered_grid_view: ^0.7.0
   flutter_launcher_icons: ^0.14.4
+  flutter_dotenv: ^6.0.1
 
 dev_dependencies:
   flutter_test:
@@ -48,7 +49,7 @@ flutter:
   assets:
     - assets/animals/
     - assets/logo.png # مسار اللوجو الجديد (تأكد من تسميته logo.png وضعه في هذا الفولدر)
-
+    - .env
   # إذا كان عندك خطوط مخصصة زي Cairo اللي بنستخدمها في الكود، ضيفها هنا:
   # fonts:
   #   - family: Cairo
