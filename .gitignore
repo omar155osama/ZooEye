@@ -45,4 +45,4 @@ app.*.map.json
 /android/app/release
 
 # 🌟 Secure Environment Variables (API Keys)
-.envflutter pub add flutter_dotenv
+.env
